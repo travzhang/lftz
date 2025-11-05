@@ -13,7 +13,7 @@ type Doc = {
 };
 
 const backendUrl =
-  (import.meta as any).env?.VITE_BACKEND_URL || 'http://localhost:8080';
+  (import.meta as any).env?.VITE_BACKEND_URL || 'https://lftz.canyonjs.io';
 
 async function gqlFetch<T>(query: string, variables?: any): Promise<T> {
   const resp = await fetch(`${backendUrl}/graphql`, {
