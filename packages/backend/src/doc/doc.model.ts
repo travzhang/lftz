@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, GraphQLISODateTime, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class DocModel {
@@ -14,15 +14,15 @@ export class DocModel {
   @Field()
   isFolder: boolean;
 
-  @Field({ nullable: true })
+  @Field(() => String, { nullable: true })
   parentId?: string | null;
 
-  @Field()
+  @Field(() => ID)
   ownerId: string;
 
-  @Field()
+  @Field(() => GraphQLISODateTime)
   createdAt: Date;
 
-  @Field()
+  @Field(() => GraphQLISODateTime)
   updatedAt: Date;
 }
