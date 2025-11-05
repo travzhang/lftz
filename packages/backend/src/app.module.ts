@@ -4,6 +4,7 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { AppController } from './app.controller';
+import { AuthModule } from './auth/auth.module';
 // import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { RepoModule } from './repo/repo.module';
@@ -11,9 +12,10 @@ import { RepoModule } from './repo/repo.module';
   imports: [
     PrismaModule,
     RepoModule,
+    AuthModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'client'),
-      exclude: ['/graphql'], // 这样就不会触发 path-to-regexp 解析错误
+      exclude: ['/graphql', '/auth*'], // 这样就不会触发 path-to-regexp 解析错误
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       autoSchemaFile: 'schema.gql',
