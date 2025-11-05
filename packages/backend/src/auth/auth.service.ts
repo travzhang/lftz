@@ -1,11 +1,15 @@
 import { randomBytes, randomUUID } from 'node:crypto';
 import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import type { Response } from 'express';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   private extractEmail(oauthUser: any): string | undefined {
     const emails = oauthUser?.emails as Array<{ value: string }> | undefined;
@@ -73,13 +77,31 @@ export class AuthService {
         boundUserId = created.id;
       }
 
-      target.searchParams.set('provider', String(provider));
-      if (boundUserId) target.searchParams.set('id', String(boundUserId));
-      if (nickname) target.searchParams.set('name', String(nickname));
-      if (oauthUser.username)
-        target.searchParams.set('username', String(oauthUser.username));
+      if (boundUserId) {
+        const token = this.jwtService.sign({ sub: boundUserId });
+        const cookieName = process.env.AUTH_COOKIE_NAME || 'auth_token';
+        const isProd = process.env.NODE_ENV === 'production';
+        const cookieSameSite = (process.env.AUTH_COOKIE_SAMESITE ||
+          (isProd ? 'none' : 'lax')) as 'lax' | 'none' | 'strict';
+        const cookieSecure = (
+          process.env.AUTH_COOKIE_SECURE
+            ? process.env.AUTH_COOKIE_SECURE === 'true'
+            : isProd
+        ) as boolean;
+        res.cookie(cookieName, token, {
+          httpOnly: true,
+          secure: cookieSecure,
+          sameSite: cookieSameSite,
+          maxAge: 7 * 24 * 60 * 60 * 1000,
+          path: '/',
+        });
+      }
     }
 
     return res.redirect(target.toString());
+  }
+
+  async me(userId: string) {
+    return this.prisma.user.findUnique({ where: { id: userId } });
   }
 }

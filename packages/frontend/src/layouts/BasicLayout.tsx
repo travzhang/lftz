@@ -48,6 +48,28 @@ const BasicLayout: FC<{
   });
 
   useEffect(() => {
+    // 通过 Cookie 获取登录态
+    (async () => {
+      try {
+        const resp = await fetch(`${backendUrl}/auth/me`, {
+          credentials: 'include',
+        });
+        if (resp.ok) {
+          const me = await resp.json();
+          if (me?.id) {
+            const user: AuthUser = {
+              id: me.id,
+              provider: 'github',
+              name: me.nickname,
+              username: me.nickname,
+            };
+            localStorage.setItem('auth:user', JSON.stringify(user));
+            setAuthUser(user);
+          }
+        }
+      } catch {}
+    })();
+
     const sp = new URLSearchParams(location.search);
     const provider = sp.get('provider');
     const id = sp.get('id');
@@ -63,7 +85,7 @@ const BasicLayout: FC<{
       navigate(location.pathname, { replace: true });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.search, navigate, location.pathname]);
+  }, [location.search, navigate, location.pathname, backendUrl]);
 
   const selected = `/${location.pathname.split('/')[1] || 'projects'}`;
 
@@ -141,10 +163,17 @@ const BasicLayout: FC<{
             <Dropdown
               menu={{
                 items: [{ key: 'logout', label: t('退出登录') || '退出登录' }],
-                onClick: ({ key }) => {
+                onClick: async ({ key }) => {
                   if (key === 'logout') {
-                    localStorage.removeItem('auth:user');
-                    setAuthUser(null);
+                    try {
+                      await fetch(`${backendUrl}/auth/logout`, {
+                        credentials: 'include',
+                      });
+                    } catch {
+                    } finally {
+                      localStorage.removeItem('auth:user');
+                      setAuthUser(null);
+                    }
                   }
                 },
               }}
