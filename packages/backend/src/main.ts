@@ -3,7 +3,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import * as dotenv from 'dotenv';
 import { json } from 'express';
-import * as cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 
 // dotenv.config({
 //   path: path.resolve(__dirname, '../../../.env'),
