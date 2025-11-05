@@ -22,7 +22,7 @@
   },
   "nano-staged": {
     "*.{js,jsx,ts,tsx,mjs,cjs,css}": [
-      "biome check --write"
+      "biome format --write"
     ]
   },
   "devDependencies": {
