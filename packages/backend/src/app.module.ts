@@ -15,7 +15,7 @@ import { RepoModule } from './repo/repo.module';
     AuthModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'client'),
-      exclude: ['/graphql', '/auth*'], // 这样就不会触发 path-to-regexp 解析错误
+      exclude: ['/graphql'],
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       autoSchemaFile: 'schema.gql',
