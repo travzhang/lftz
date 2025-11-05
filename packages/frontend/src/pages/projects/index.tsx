@@ -1,3 +1,4 @@
+import BasicLayout from '@/layouts/BasicLayout';
 import { Button, Col, Empty, Input, Row, Space, Tree, message } from 'antd';
 import type { DataNode } from 'antd/es/tree';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -122,61 +123,72 @@ const Page: React.FC = () => {
   };
 
   return (
-    <Row gutter={12} style={{ height: 'calc(100vh - 64px)' }}>
-      <Col
-        span={6}
-        style={{
-          borderRight: '1px solid rgba(5,5,5,0.06)',
-          height: '100%',
-          padding: 12,
-        }}
-      >
-        <Space style={{ marginBottom: 12 }}>
-          <Button size='small' onClick={() => onCreate(true)}>
-            新建文件夹
-          </Button>
-          <Button type='primary' size='small' onClick={() => onCreate(false)}>
-            新建文档
-          </Button>
-          <Button danger size='small' disabled={!selectedId} onClick={onDelete}>
-            删除
-          </Button>
-        </Space>
-        <Tree
-          treeData={treeData}
-          defaultExpandAll
-          onSelect={(keys) => setSelectedId(String(keys[0]))}
-        />
-      </Col>
-      <Col span={18} style={{ padding: 12, height: '100%' }}>
-        {current ? (
-          <div
-            style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-          >
-            <Input
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder='标题'
-              style={{ marginBottom: 12 }}
-            />
-            <Input.TextArea
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              placeholder='在此编写 Markdown 内容'
-              autoSize={{ minRows: 18 }}
-              style={{ flex: 1 }}
-            />
-            <div style={{ marginTop: 12 }}>
-              <Button type='primary' onClick={onSave}>
-                保存
-              </Button>
+    <BasicLayout>
+      <Row gutter={12} style={{ height: 'calc(100vh - 64px)' }}>
+        <Col
+          span={6}
+          style={{
+            borderRight: '1px solid rgba(5,5,5,0.06)',
+            height: '100%',
+            padding: 12,
+          }}
+        >
+          <Space style={{ marginBottom: 12 }}>
+            <Button size='small' onClick={() => onCreate(true)}>
+              新建文件夹
+            </Button>
+            <Button type='primary' size='small' onClick={() => onCreate(false)}>
+              新建文档
+            </Button>
+            <Button
+              danger
+              size='small'
+              disabled={!selectedId}
+              onClick={onDelete}
+            >
+              删除
+            </Button>
+          </Space>
+          <Tree
+            treeData={treeData}
+            defaultExpandAll
+            onSelect={(keys) => setSelectedId(String(keys[0]))}
+          />
+        </Col>
+        <Col span={18} style={{ padding: 12, height: '100%' }}>
+          {current ? (
+            <div
+              style={{
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              <Input
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder='标题'
+                style={{ marginBottom: 12 }}
+              />
+              <Input.TextArea
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                placeholder='在此编写 Markdown 内容'
+                autoSize={{ minRows: 18 }}
+                style={{ flex: 1 }}
+              />
+              <div style={{ marginTop: 12 }}>
+                <Button type='primary' onClick={onSave}>
+                  保存
+                </Button>
+              </div>
             </div>
-          </div>
-        ) : (
-          <Empty description='请选择或新建文档' />
-        )}
-      </Col>
-    </Row>
+          ) : (
+            <Empty description='请选择或新建文档' />
+          )}
+        </Col>
+      </Row>
+    </BasicLayout>
   );
 };
 
