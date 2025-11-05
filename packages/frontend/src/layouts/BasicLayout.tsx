@@ -35,7 +35,7 @@ const BasicLayout: FC<{
   };
 
   const backendUrl =
-    (import.meta as any).env?.VITE_BACKEND_URL || 'http://localhost:8080';
+    (import.meta as any).env?.VITE_BACKEND_URL || 'https://lftz.canyonjs.io';
   const githubLoginUrl = `${backendUrl}/auth/github`;
 
   const [authUser, setAuthUser] = useState<AuthUser | null>(() => {
