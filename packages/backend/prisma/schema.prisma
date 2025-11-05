@@ -9,6 +9,18 @@ generator client {
   output        = "../generated/prisma/client"
 }
 
+model User {
+  id        String   @id
+  email     String
+  password  String
+  nickname  String
+  avatar    String
+  favor     String
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(3)
+
+  @@map("canyon_user")
+}
+
 model Repo {
   id                String   @id
   pathWithNamespace String   @map("path_with_namespace")

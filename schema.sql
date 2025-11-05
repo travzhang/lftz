@@ -1,12 +1,26 @@
 -- CreateTable
+CREATE TABLE "canyon_user" (
+    "id" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "nickname" TEXT NOT NULL,
+    "avatar" TEXT NOT NULL,
+    "favor" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "canyon_user_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "canyon_repo" (
     "id" TEXT NOT NULL,
     "path_with_namespace" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "bu" TEXT NOT NULL,
     "config" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL,
     "updated_at" TIMESTAMP(3) NOT NULL,
+    "tags" JSONB NOT NULL,
+    "members" JSONB NOT NULL,
 
     CONSTRAINT "canyon_repo_pkey" PRIMARY KEY ("id")
 );
@@ -122,3 +136,4 @@ CREATE INDEX "canyon_hit_coverage_id_idx" ON "canyon_hit"("coverage_id");
 
 -- CreateIndex
 CREATE INDEX "canyon_hit_version_id_idx" ON "canyon_hit"("version_id");
+
