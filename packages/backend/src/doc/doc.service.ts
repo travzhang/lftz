@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { randomUUID } from 'node:crypto';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateDocInput, UpdateDocInput } from './input-type.args';
 
@@ -20,7 +21,7 @@ export class DocService {
   async create(ownerId: string, input: CreateDocInput) {
     const created = await this.prisma.doc.create({
       data: {
-        id: input.id,
+        id: input.id ?? randomUUID(),
         title: input.title,
         content: input.content ?? '',
         isFolder: Boolean(input.isFolder),

@@ -8,7 +8,7 @@ import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
 // import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
-import { RepoModule } from './repo/repo.module';
+// import { RepoModule } from './repo/repo.module';
 import { DocModule } from './doc/doc.module';
 import { GqlAuthGuard } from './auth/gql-auth.guard';
 @Module({
